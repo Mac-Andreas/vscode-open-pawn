@@ -1,0 +1,177 @@
+{
+  "Gamemode init callback": {
+    "prefix": "OnGameModeInit",
+    "body": [
+      "public OnGameModeInit()",
+      "{",
+      "\t$0",
+      "\treturn 1;",
+      "}"
+    ],
+    "description": "open.mp/SA-MP gamemode initialisation callback"
+  },
+  "Gamemode exit callback": {
+    "prefix": "OnGameModeExit",
+    "body": ["public OnGameModeExit()", "{", "\t$0", "\treturn 1;", "}"],
+    "description": "Gamemode shutdown callback"
+  },
+  "Filterscript init": {
+    "prefix": "OnFilterScriptInit",
+    "body": ["public OnFilterScriptInit()", "{", "\t$0", "\treturn 1;", "}"],
+    "description": "Filterscript initialisation callback"
+  },
+  "Player connect": {
+    "prefix": "OnPlayerConnect",
+    "body": ["public OnPlayerConnect(playerid)", "{", "\t$0", "\treturn 1;", "}"],
+    "description": "Called when a player connects"
+  },
+  "Player disconnect": {
+    "prefix": "OnPlayerDisconnect",
+    "body": [
+      "public OnPlayerDisconnect(playerid, reason)",
+      "{",
+      "\t$0",
+      "\treturn 1;",
+      "}"
+    ],
+    "description": "Called when a player disconnects"
+  },
+  "Player spawn": {
+    "prefix": "OnPlayerSpawn",
+    "body": ["public OnPlayerSpawn(playerid)", "{", "\t$0", "\treturn 1;", "}"],
+    "description": "Called when a player spawns"
+  },
+  "Player death": {
+    "prefix": "OnPlayerDeath",
+    "body": [
+      "public OnPlayerDeath(playerid, killerid, reason)",
+      "{",
+      "\t$0",
+      "\treturn 1;",
+      "}"
+    ],
+    "description": "Called when a player dies"
+  },
+  "Player command text": {
+    "prefix": "OnPlayerCommandText",
+    "body": [
+      "public OnPlayerCommandText(playerid, cmdtext[])",
+      "{",
+      "\tif (strcmp(cmdtext, \"/${1:command}\", true) == 0)",
+      "\t{",
+      "\t\t$0",
+      "\t\treturn 1;",
+      "\t}",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "Raw command handler"
+  },
+  "Public function": {
+    "prefix": "public",
+    "body": ["public ${1:Name}(${2:params})", "{", "\t$0", "\treturn 1;", "}"],
+    "description": "Public function definition"
+  },
+  "Stock function": {
+    "prefix": "stock",
+    "body": ["stock ${1:Name}(${2:params})", "{", "\t$0", "\treturn ${3:1};", "}"],
+    "description": "Stock function definition"
+  },
+  "Forward declaration": {
+    "prefix": "forward",
+    "body": ["forward ${1:Name}(${2:params});"],
+    "description": "Forward a public function"
+  },
+  "Enum": {
+    "prefix": "enum",
+    "body": ["enum ${1:E_NAME}", "{", "\t${2:Field}", "}"],
+    "description": "Enum definition"
+  },
+  "Enum struct (data array)": {
+    "prefix": "enumdata",
+    "body": [
+      "enum ${1:E_PLAYER}",
+      "{",
+      "\t${2:Field}",
+      "}",
+      "new ${3:PlayerData}[MAX_PLAYERS][${1:E_PLAYER}];"
+    ],
+    "description": "Enum + per-player data array (classic SA-MP pattern)"
+  },
+  "Loop over players": {
+    "prefix": "foreachplayer",
+    "body": [
+      "for (new i = 0; i < MAX_PLAYERS; i++)",
+      "{",
+      "\tif (!IsPlayerConnected(i)) continue;",
+      "\t$0",
+      "}"
+    ],
+    "description": "Iterate connected players (vanilla)"
+  },
+  "foreach (Player)": {
+    "prefix": "foreach",
+    "body": ["foreach (new ${1:i} : ${2:Player})", "{", "\t$0", "}"],
+    "description": "foreach iterator (requires foreach/YSI include)"
+  },
+  "SendClientMessage": {
+    "prefix": "scm",
+    "body": ["SendClientMessage(${1:playerid}, ${2:0xFFFFFFFF}, \"${3:message}\");"],
+    "description": "Send a client message"
+  },
+  "SendClientMessageToAll": {
+    "prefix": "scmta",
+    "body": ["SendClientMessageToAll(${1:0xFFFFFFFF}, \"${2:message}\");"],
+    "description": "Broadcast a client message"
+  },
+  "format + SendClientMessage": {
+    "prefix": "formatmsg",
+    "body": [
+      "new string[144];",
+      "format(string, sizeof(string), \"${1:%s}\", ${2:value});",
+      "SendClientMessage(${3:playerid}, ${4:0xFFFFFFFF}, string);"
+    ],
+    "description": "Format a string and send it"
+  },
+  "Dialog show": {
+    "prefix": "ShowPlayerDialog",
+    "body": [
+      "ShowPlayerDialog(${1:playerid}, ${2:DIALOG_ID}, ${3:DIALOG_STYLE_MSGBOX}, \"${4:Title}\", \"${5:Body}\", \"${6:OK}\", \"${7:Cancel}\");"
+    ],
+    "description": "Show a dialog to a player"
+  },
+  "OnDialogResponse": {
+    "prefix": "OnDialogResponse",
+    "body": [
+      "public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])",
+      "{",
+      "\tswitch (dialogid)",
+      "\t{",
+      "\t\tcase ${1:DIALOG_ID}:",
+      "\t\t{",
+      "\t\t\t$0",
+      "\t\t}",
+      "\t}",
+      "\treturn 0;",
+      "}"
+    ],
+    "description": "Dialog response handler"
+  },
+  "SetTimer": {
+    "prefix": "SetTimer",
+    "body": ["SetTimer(\"${1:FunctionName}\", ${2:1000}, ${3:false});"],
+    "description": "Schedule a timer"
+  },
+  "SetTimerEx": {
+    "prefix": "SetTimerEx",
+    "body": [
+      "SetTimerEx(\"${1:FunctionName}\", ${2:1000}, ${3:false}, \"${4:i}\", ${5:playerid});"
+    ],
+    "description": "Schedule a timer with parameters"
+  },
+  "if connected": {
+    "prefix": "ifconn",
+    "body": ["if (IsPlayerConnected(${1:playerid}))", "{", "\t$0", "}"],
+    "description": "Guard on player connected"
+  }
+}

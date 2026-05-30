@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.vsix
+*.map
+.DS_Store
+
+# bin/ holds the bundled per-platform pawncc binaries — these ARE committed
+# (they ship in the .vsix). Only the Intel-Mac build (which we don't ship by
+# default) is ignored.
+bin/darwin-x64/

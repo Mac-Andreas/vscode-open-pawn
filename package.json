@@ -1,0 +1,181 @@
+{
+  "name": "open-pawn",
+  "displayName": "Open Pawn — SA-MP & open.mp Compiler + Tools",
+  "description": "Pawn language support for SA-MP & open.mp: syntax highlighting, snippets, autocomplete, hovers, go-to-definition, and a native pawncc compiler with diagnostics — on Windows, macOS (Apple Silicon/Intel), and Linux, no Wine on the Mac. A modern cross-platform replacement for Pawno / Qawno.",
+  "version": "0.1.0",
+  "publisher": "Mac-Andreas",
+  "author": {
+    "name": "Xyranaut"
+  },
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1f2330",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mac-Andreas/vscode-open-pawn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mac-Andreas/vscode-open-pawn/issues"
+  },
+  "homepage": "https://github.com/Mac-Andreas/vscode-open-pawn#readme",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Linters",
+    "Formatters"
+  ],
+  "keywords": [
+    "pawn",
+    "pawno",
+    "qawno",
+    "samp",
+    "sa-mp",
+    "san andreas multiplayer",
+    "open.mp",
+    "openmp",
+    "open multiplayer",
+    "pawncc",
+    "amx",
+    "gamemode",
+    "filterscript",
+    "scripting"
+  ],
+  "activationEvents": [
+    "onLanguage:pawn"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "pawn",
+        "aliases": ["Pawn", "pawn", "PAWN", "SA-MP", "open.mp"],
+        "extensions": [".pwn", ".inc", ".p", ".pawn"],
+        "filenames": [],
+        "firstLine": "^\\s*(#include\\s+[<\"](a_samp|a_players|open\\.mp|a_actor|YSI|sscanf)|#define\\s+FILTERSCRIPT|public\\s+OnGameModeInit)\\b",
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pawn",
+        "scopeName": "source.pawn",
+        "path": "./syntaxes/pawn.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "pawn",
+        "path": "./snippets/pawn.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "pawnOmp.compile",
+        "title": "Pawn: Compile Current File",
+        "category": "Pawn"
+      },
+      {
+        "command": "pawnOmp.compileMain",
+        "title": "Pawn: Compile Main Script",
+        "category": "Pawn"
+      },
+      {
+        "command": "pawnOmp.showCompilerInfo",
+        "title": "Pawn: Show Compiler Info",
+        "category": "Pawn"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "pawnOmp.compile",
+        "key": "cmd+shift+b",
+        "mac": "cmd+shift+b",
+        "win": "ctrl+shift+b",
+        "linux": "ctrl+shift+b",
+        "when": "editorLangId == pawn"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "pawn-omp",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The .pwn file to compile. Defaults to the active file or the configured main script."
+          }
+        }
+      }
+    ],
+    "configuration": {
+      "title": "Pawn (open.mp)",
+      "properties": {
+        "pawnOmp.compilerPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Absolute path to the native `pawncc` binary. If empty, the extension searches common locations (workspace `qawno/native/pawncc`, `qawno/pawncc`, `pawno/pawncc`, then `pawncc` on PATH)."
+        },
+        "pawnOmp.wineWrapperPath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Absolute path to a Wine `pawn-cc.sh` wrapper, used only when no native `pawncc` is found. If empty, the extension searches the workspace for `pawn-cc.sh` / `run-pawncc-wine.sh`."
+        },
+        "pawnOmp.preferWine": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use the Wine wrapper even when a native compiler is available."
+        },
+        "pawnOmp.mainScript": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Workspace-relative path to the main gamemode/script (e.g. `gamemodes/survival.pwn`). Used by the 'Compile Main Script' command and compile-on-save when set."
+        },
+        "pawnOmp.includePaths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["qawno/include", "includes", "pawno/include"],
+          "markdownDescription": "Workspace-relative include directories passed to pawncc via `-i`. Non-existent paths are skipped."
+        },
+        "pawnOmp.outputDir": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Workspace-relative directory for the compiled `.amx`. If empty, the `.amx` is written next to the source file."
+        },
+        "pawnOmp.compilerArgs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["-;+", "-(+", "-d3", "-Z+"],
+          "description": "Extra arguments passed to pawncc."
+        },
+        "pawnOmp.compileOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically compile when a Pawn file is saved."
+        },
+        "pawnOmp.compileOnSaveTarget": {
+          "type": "string",
+          "enum": ["currentFile", "mainScript"],
+          "default": "mainScript",
+          "markdownDescription": "On save, compile the saved file itself (`currentFile`) or always compile the configured `#pawnOmp.mainScript#` (`mainScript`). Falls back to the current file if no main script is set."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "package": "npm run compile -- --minify",
+    "watch": "npm run compile -- --sourcemap --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.75.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0"
+  }
+}
